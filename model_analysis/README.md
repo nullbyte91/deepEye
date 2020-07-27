@@ -8,7 +8,7 @@
 |pedestrian-and-vehicle-detector-adas-0001   |	3.974   |1.650	   |24.09   |   |
 |vehicle-detection-adas-0002   |2.798   |1.079   |26   |   |
 |vehicle-detection-adas-binary-0001   |0.942   |1.079   |28   |   |
-|road-segmentation-adas-0001   |4.770   |4.770   |   |   |
+|road-segmentation-adas-0001   |4.770   |4.770   |8.48   |   |
 |semantic-segmentation-adas-0001   |58.572   |58.572   |   |   |
 
 ## Public Model
