@@ -4,7 +4,7 @@
 |Model Name   |Complexity - GFLOPs   | Size - MP  | FPS - FP32 |  FPS - FP16 |
 |---|---|---|---|---|
 |pedestrian-detection-adas-0002   |2.836   |1.165   |28   |   |
-|pedestrian-detection-adas-binary-0001   |0.945   |1.165	   |   |   |
+|pedestrian-detection-adas-binary-0001   |0.945   |1.165|33   |   |
 |pedestrian-and-vehicle-detector-adas-0001   |	3.974   |1.650	   |   |   |
 |vehicle-detection-adas-0002   |2.798   |1.079   |   |   |
 |vehicle-detection-adas-binary-0001   |0.942   |1.079   |   |   |
