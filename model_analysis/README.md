@@ -15,6 +15,6 @@
 |Model Name   |Complexity - GFLOPs   | Size - MP  | FPS - FP32 |  FPS - FP16 |
 |---|---|---|---|---|
 |DeepLab V3|11.469||||
-|YOLO v3|65.9843||||
+|YOLO v3|65.9843|1.86|||
 |SSD with MobileNet |2.316~2.494|22|||
 
