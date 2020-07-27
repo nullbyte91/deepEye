@@ -9,7 +9,7 @@
 |vehicle-detection-adas-0002   |2.798   |1.079   |26   |   |
 |vehicle-detection-adas-binary-0001   |0.942   |1.079   |28   |   |
 |road-segmentation-adas-0001   |4.770   |4.770   |8.48   |   |
-|semantic-segmentation-adas-0001   |58.572   |58.572   |   |   |
+|semantic-segmentation-adas-0001   |58.572   |58.572   |2.06  |   |
 
 ## Public Model
 |Model Name   |Complexity - GFLOPs   | Size - MP  | FPS - FP32 |  FPS - FP16 |
