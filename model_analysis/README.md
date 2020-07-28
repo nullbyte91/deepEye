@@ -12,9 +12,9 @@
 |semantic-segmentation-adas-0001   |58.572   |58.572   |2.06  |   |
 
 ## Public Model
-|Model Name   |Complexity - GFLOPs   | Size - MP  | FPS - FP32 |  FPS - FP16 |
-|---|---|---|---|---|
-|DeepLab V3|11.469||||
-|YOLO v3|65.9843||1.86||
-|SSD with MobileNet |2.316~2.494||22||
+|Model Name   |Complexity - GFLOPs   | Size - MP  | FPS - FP32 | FPS Async Thread - FP32 |FPS - FP16 |
+|---|---|---|---|---|---|
+|DeepLab V3|11.469|||||
+|YOLO v3|65.9843||1.86|||
+|SSD with MobileNet |2.316~2.494||22|38.3||
 
