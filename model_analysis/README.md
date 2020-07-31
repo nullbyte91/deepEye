@@ -15,3 +15,8 @@
 |road-segmentation-adas-0001   |4.770   |4.770   |8.48   |1.94   |1.02
 |semantic-segmentation-adas-0001   |58.572   |6.686   |2.06  |Memory Error   |Memory Error
 
+## Public Models
+|Model Name   |Complexity - GFLOPs   | Size - MP  | CPU FPS - FP32 |  Jetson + VPU FPS - FP16 | RPI + VPU FPS - FP16
+|---          |---                   |---         |---             |---                       |---
+|YOLO v3      | 65.9843   |237   |1.86   |1.4   |Crash |
+|SSD with MobileNet |2.316~2.494   |65 |22   |10.4   |6.51
