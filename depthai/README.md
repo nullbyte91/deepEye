@@ -32,3 +32,11 @@ mobilenet-ssd-v2/FP32/mobilenet-ssd-v2.blob -ip FP32 -VPU_MYRIAD_PLATFORM VPU_MY
 
 We need to build a json file based on Output blob dimension and the classes.
 ---
+
+## Benchmark analysis
+| Model  | SAHVES 4 - FPS | SAHVES 7 - FPS  | GFlops  |  mParams |   |
+|---|---|---|---|---|---|
+| ssd_mobilenet_v1_coco  | 28-30  |   | 2.316~2.494  | 5.783~6.807  |   |
+| ssd_mobilenet_v2_coco  | 12-13  |  14-15 | 3.775  | 16.818   |   |
+|   |   |   |   |   |   |
+|   |   |   |   |   |   |
