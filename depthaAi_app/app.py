@@ -37,7 +37,24 @@ class DepthAI:
                 "keep_aspect_ratio": True,
                 'blob_file': str(Path(model, 'mobilenet-ssd.blob').absolute()),
                 'blob_file_config': str(Path(model, 'mobilenet-ssd_depth.json').absolute())
-            }
+            },
+            'camera':
+            {
+                'rgb':
+                {
+                    # 3840x2160, 1920x1080
+                    # only UHD/1080p/30 fps supported for now
+                    'resolution_h': 1080,
+                    'fps': 30,
+                },
+                'mono':
+                {
+                    # 1280x720, 1280x800, 640x400 (binning enabled)
+                    'resolution_h': 720,
+                    'fps': 30,
+                },
+            },
+
             }
 
         # Create a pipeline config
