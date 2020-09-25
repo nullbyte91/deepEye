@@ -12,3 +12,22 @@ We plan to support this feature both edge device and mobile app conversion. For 
 
 ### Mobile Device conversion
 ![alt text](s_images/txt2s_bt.png)
+
+
+### Dep
+```bash
+# google speech
+sudo apt-get install sox libsox-fmt-mp3
+
+python3 -m pip install pip install google-speech sox
+
+
+# Mycroft Mimic V1
+git clone https://github.com/MycroftAI/mimic1.git
+cd mimic1
+./dependencies.sh --prefix="/usr/local"
+./autogen.sh
+./configure --prefix="/usr/local"
+make
+make check
+```
