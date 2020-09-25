@@ -4,6 +4,10 @@ import sched
 import time 
 from threading import Thread, Lock
 
+# ROS
+import rospy
+from std_msgs.msg import String
+
 # Init with False
 networkConnection = False
 
@@ -38,12 +42,24 @@ def isInternetConnected():
     # Recursive call
     s.enter(1, 1, isInternetConnected, ())
 
+def callback(data):
+    rospy.loginfo(rospy.get_caller_id() + "I heard %s", data.data)
+    
+
 def main():
     format = "%(asctime)s: %(message)s"
     logging.basicConfig(format=format, level=logging.INFO,
                         datefmt="%H:%M:%S")
+
+    # ROS callback
+    rospy.init_node('subscriper', anonymous=True)
+
+    rospy.Subscriber("txt_simulator", String, callback)
+
     s.enter(1, 1, isInternetConnected, ())
     s.run()
     
+    rospy.spin()
+
 if __name__ == "__main__":
     main()
