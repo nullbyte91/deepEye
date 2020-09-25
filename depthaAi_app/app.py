@@ -6,8 +6,13 @@ import json    #json lib
 from pathlib import Path #Path lib
 from config import model
 
+# Object Tracker
+from tracker import Tracker
+from crash_avoidance import CrashAvoidance
+
 log = logging.getLogger(__name__)
 
+DEBUG = 0
 class DepthAI:
     def create_pipeline(self, config):
         self.device = depthai.Device('', False)
@@ -44,8 +49,14 @@ class DepthAI:
             self.data = json.load(f)
 
         self.detection = []
+        
+        # Calculate colliusion_avoidance for bicycle
+        # bus, car, dog,  horse, motorbike, train
+        self.colliusion_avoidance = [2.0, 6.0, 7.0, 10.0, 12.0, 13.0, 14.0, 17.0]
 
     def capture(self):
+
+        cv2.namedWindow("output", cv2.WINDOW_NORMAL)  
 
         # Label mapping
         try:
@@ -72,7 +83,8 @@ class DepthAI:
                     #print( e[0]['conf'])
                     if e[0]['conf'] > 0.5:
                         self.detection.append(e)
-                                
+            
+            boxes = []
             for packet in data_packets:
                 if packet.stream_name == 'previewout':
                     data = packet.getData()
@@ -88,27 +100,42 @@ class DepthAI:
                     img_h = frame.shape[0]
                     img_w = frame.shape[1]
 
-                    boxes = []
-
                     for e in self.detection:
+                        color = (0, 255, 0) # bgr
+                        label = e[0]['label']
+                        if label in self.colliusion_avoidance:
+                            # Create dic for tracking
+                            boxes.append({
+                            'detector': "MobileNet SSD",
+                            'conf': e[0]['conf'],
+                            'left': int(e[0]['x_min'] * img_w),
+                            'top': int(e[0]['y_min'] * img_h),
+                            'right': int(e[0]['x_max'] * img_w),
+                            'bottom': int(e[0]['y_max'] * img_h),
+                            'distance_x': e[0]['distance_x'],
+                            'distance_y': e[0]['distance_y'],
+                            'distance_z': e[0]['distance_z'],
+                            })
+                            color = (0, 0, 255) # bgr
+                            
+                        frame_o = frame.copy()
+
                         pt1 = int(e[0]['x_min']  * img_w), int(e[0]['y_min']    * img_h)
                         pt2 = int(e[0]['x_max'] * img_w), int(e[0]['y_max'] * img_h)
-                        color = (0, 0, 255) # bgr
+
 
                         x1, y1 = pt1
                         x2, y2 = pt2
 
                         cv2.rectangle(frame, pt1, pt2, color)
 
-                        # Handles case where TensorEntry object label is out if range
-                        if e[0]['label'] > len(labels):
-                            print("Label index=",e[0]['label'], "is out of range. Not applying text to rectangle.")
-                        else:
-                            pt_t1 = x1, y1 + 20
-                            cv2.putText(frame, labels[int(e[0]['label'])], pt_t1, cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
+                        pt_t1 = x1, y1 + 20
+                        cv2.putText(frame, labels[int(e[0]['label'])], pt_t1, cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
 
-                            pt_t2 = x1, y1 + 40
-                            cv2.putText(frame, '{:.2f}'.format(100*e[0]['conf']) + ' %', pt_t2, cv2.FONT_HERSHEY_SIMPLEX, 0.5, color)
+                        pt_t2 = x1, y1 + 40
+                        cv2.putText(frame, '{:.2f}'.format(100*e[0]['conf']) + ' %', pt_t2, cv2.FONT_HERSHEY_SIMPLEX, 0.5, color)
+
+                        if DEBUG:
                             if self.config['ai']['calc_dist_to_bb']:
                                 pt_t3 = x1, y1 + 60
                                 cv2.putText(frame, 'x1:' '{:7.3f}'.format(e[0]['distance_x']) + ' m', pt_t3, cv2.FONT_HERSHEY_SIMPLEX, 0.5, color)
@@ -119,13 +146,25 @@ class DepthAI:
                                 pt_t5 = x1, y1 + 100
                                 cv2.putText(frame, 'z1:' '{:7.3f}'.format(e[0]['distance_z']) + ' m', pt_t5, cv2.FONT_HERSHEY_SIMPLEX, 0.5, color)
                         
-                cv2.imshow("out", frame)
-                if cv2.waitKey(10) == ord('q'):
-                    cv2.destroyAllWindows()
-                    exit(0)
-def main():
-    di = DepthAI()
-    di.capture()
+                        cv2.imshow("output", frame)
+                        if cv2.waitKey(1) == ord('q'):
+                            cv2.destroyAllWindows()
+                            exit(0)
 
+                        yield frame_o, boxes
+
+def main():
+    # depth AI
+    di = DepthAI()
+    # Tracker
+    tracker = Tracker(log)
+    # Cross avoidance
+    crash_avoidance = CrashAvoidance()
+    
+    for frame, results in di.capture():
+        pts = [(item['distance_x'], item['distance_z']) for item in results]
+        tracker_objs = tracker.update(pts, log)
+        crash_alert = crash_avoidance.parse(tracker_objs)
+        
 if __name__ == "__main__":
     main()
