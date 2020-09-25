@@ -8,6 +8,13 @@ from threading import Thread, Lock
 import rospy
 from std_msgs.msg import String
 
+# Text 2 speech
+from google_speech import Speech
+
+import subprocess
+
+lang = "en"
+
 # Init with False
 networkConnection = False
 
@@ -43,8 +50,18 @@ def isInternetConnected():
     s.enter(1, 1, isInternetConnected, ())
 
 def callback(data):
-    rospy.loginfo(rospy.get_caller_id() + "I heard %s", data.data)
+    global networkConnection
     
+    if networkConnection == True:
+        # Google speech block
+        speech = Speech(data.data, lang)
+        speech.play()
+        time.sleep(0.5)
+    else:
+        # On device mycroft mimic v1
+        p = subprocess.Popen(["/home/nullbyte/Desktop/myGit/mimic1/mimic", data.data], stdout = subprocess.PIPE)
+        (output, err) = p.communicate() 
+        p_status = p.wait()
 
 def main():
     format = "%(asctime)s: %(message)s"
