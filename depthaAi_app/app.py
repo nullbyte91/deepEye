@@ -8,7 +8,7 @@ from config import model
 
 # Object Tracker
 from tracker import Tracker
-from crash_avoidance import CrashAvoidance
+from colliusion_avoidance import CrashAvoidance
 
 log = logging.getLogger(__name__)
 
