@@ -17,6 +17,8 @@ vision.
 
 We are building a software stack on DepthAI Modular Camera[BW1098FFC] from Luxonis.
 
+image:images/hw.jpeg[depthAI,640,480]
+
 == Installation
 === DepthAI
 ```bash
@@ -79,6 +81,9 @@ rosdep update
 python3 -m pip install -r requirements.txt
 ```
 
+== Software stack 
+To do: Software components design details
+
 == Usage
 ```bash
 # To run a depthai detection, colliusion_avoidance
@@ -93,6 +98,25 @@ roscore &
 python3 txt2speech.py
 ```
 
+=== Hardware Information
+We plan use the DepthAI USB3 Modular Cameras[BW1098FFC] for POC. We are using RPI and Jeston. The AI/vision processing is done on the depthAI based on Myriad X Arch.
+
+
+image:images/BW1098FFC_R0M0E0_diag.png[depthAI]
+
+*Key Features of the device:
+
+* 2 BG0250TG mono camera module interfaces
+* 1 BG0249 RGB camera module interface
+* 5V power input via barrel jack
+* USB 3.1 Gen 1 Type-C
+* Pads for DepthAI SoM 1.8V SPI
+* Pads for DepthAI SoM 3.3V SDIO
+* Pads for DepthAI SoM 1.8V Aux Signals (I2C, UART, GPIO)
+* 5V Fan/Aux header
+* Pads for DepthAI SoM aux signals
+* Design files produced with Altium Designer 20
+
 == Experimental work
 
 == Reference
@@ -101,3 +125,4 @@ link:https://luxonis.com/depthai[DepthaAI Home Page]
 link:https://github.com/luxonis[depthaAI core development]
 
 link:https://github.com/openvinotoolkit/openvino[OpenVino toolkit development]
+link:https://github.com/luxonis/depthai-hardware/tree/master/BW1098FFC_DepthAI_USB3[BW1098FFC_DepthAI_USB3 HW]
