@@ -1,4 +1,4 @@
-= OpenVino For People Counter
+= deepEye - A POC project for OpenCV Spatial AI Competition
 :idprefix:
 :idseparator: -
 :sectanchors:
@@ -95,4 +95,9 @@ python3 txt2speech.py
 
 == Experimental work
 
-== Reference work
+== Reference
+link:https://luxonis.com/depthai[DepthaAI Home Page]
+
+link:https://github.com/luxonis[depthaAI core development]
+
+link:https://github.com/openvinotoolkit/openvino[OpenVino toolkit development]
