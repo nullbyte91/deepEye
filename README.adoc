@@ -1,0 +1,98 @@
+= OpenVino For People Counter
+:idprefix:
+:idseparator: -
+:sectanchors:
+:sectlinks:
+:sectnumlevels: 6
+:sectnums:
+:toc: macro
+:toclevels: 6
+:toc-title: Table of Contents
+
+toc::[]
+
+== Introduction
+A POC project for OpenCV Spatial AI Competition and we are trying build an advanced assist system for the specially-abled people to perceive the environment in a better way and would provide seamless, reliable navigation for them at a low cost so that anyone can leverage the benefits of computer
+vision.
+
+We are building a software stack on DepthAI Modular Camera[BW1098FFC] from Luxonis.
+
+== Installation
+=== DepthAI
+```bash
+git clone https://github.com/luxonis/depthai-python.git
+cd depthai-python
+git submodule update --init --recursive
+mkdir -p ~/depthai_v1
+python3 -m venv ~/depthai_v1
+python3 -m pip install -U pip
+python3 setup.py develop
+
+# Check the Installation
+python3 -c "import depthai"
+```
+
+=== Camera Calibration
+==== BW1098FFC Calibration configuration
+```json
+{
+    "board_config":
+    {
+        "name": "BW1098FFC",
+        "revision": "R0M0E0",
+        "swap_left_and_right_cameras": true,
+        "left_fov_deg": 71.86,
+        "rgb_fov_deg": 68.7938,
+        "left_to_right_distance_cm": 5.0,
+        "left_to_rgb_distance_cm": 2.5
+    }
+}
+```
+```bash
+mkdir -p ~/depthai/ && pushd ~/depthai/
+git clone https://github.com/luxonis/depthai.git
+popd
+cp calibration/config/BW1098FFC.json depthAI/depthai/resources/boards/
+pushd ~/depthai/
+python3 calibrate.py -s 2 -brd BW1098FFC -ih
+```
+=== ROS
+
+We use ROS framework multiprocess communication.
+```bash
+sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
+sudo apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654
+
+sudo apt update
+
+sudo apt install -y ros-melodic-ros-base
+
+# Install inside virtual env
+python3 -m pip install -U rosdep
+rosdep init
+
+rosdep update
+
+```
+=== Other dep
+```bash
+python3 -m pip install -r requirements.txt
+```
+
+== Usage
+```bash
+# To run a depthai detection, colliusion_avoidance
+python3 app.py
+
+# Speech
+source /opt/ros/melodic/setup.zsh #zsh
+        (or)
+source /opt/ros/melodic/setup.zsh #bash 
+roscore &
+
+python3 txt2speech.py
+```
+
+== Experimental work
+
+== Reference work
