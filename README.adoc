@@ -82,7 +82,7 @@ python3 -m pip install -r requirements.txt
 ```
 
 == Software stack 
-To do: Software components design details
+image:images/HLD.png[HLD]
 
 == Usage
 ```bash
