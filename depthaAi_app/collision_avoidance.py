@@ -26,6 +26,8 @@ class CrashAvoidance:
         self.pub = rospy.Publisher('depthai', String, queue_size=10)
         rate = rospy.Rate(10) # 10hz
 
+        self.object_ID = None
+
     def best_fit_slope_and_intercept(self, objectID):
         points = [item['value'] for item in self.entries[objectID]]
         xs = np.array([item[0] for item in points])
@@ -37,6 +39,7 @@ class CrashAvoidance:
 
     def is_dangerous_trajectory(self, objectID):
         last = self.entries[objectID][0]
+
 
         # Update the class name
         class_name = last['class']
@@ -50,15 +53,27 @@ class CrashAvoidance:
         if DEBUG:
             image = np.ones((200, 200)) * 255
 
-            # print("b: {}".format(b))
             cv2.line(image, (0, int(-100 * m + b)), (200, int(100 * m + b)), (0, 0, 0))
             cv2.putText(image, f"Distance: {round(distance, 2)}", (20, 20), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0))
+            string = ""
             if distance < self.collision_trajectory_threshold:
+                # We need to cal and update the oppsite side object 
+                if (m < 0):
+                    string = "left side" + " "+ class_name + " "
+                else:  
+                   string = "right side" + " " + class_name + " "
+
                 cv2.putText(image, "DANGER", (20, 100), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255))
                 cv2.putText(image, class_name, (100, 180), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255))
+                
+                # Track the existing object and dont update the string
+                # until get the new object ID
 
-                # Publish the trajectory object
-                self.pub.publish(class_name)
+                if self.object_ID != objectID:
+                    self.object_ID = objectID
+                    # Publish the trajectory object
+                    print(string)
+                    self.pub.publish(string)
 
             cv2.imshow(f"trajectory", image)
             cv2.waitKey(1)
