@@ -51,7 +51,7 @@ def isInternetConnected():
 
 def callback(data):
     global networkConnection
-    
+    print(data)
     if networkConnection == True:
         # Google speech block
         speech = Speech(data.data, lang)
@@ -71,7 +71,7 @@ def main():
     # ROS callback
     rospy.init_node('subscriper', anonymous=True)
 
-    rospy.Subscriber("txt_simulator", String, callback)
+    rospy.Subscriber("depthai", String, callback)
 
     s.enter(1, 1, isInternetConnected, ())
     s.run()

@@ -6,6 +6,10 @@ import cv2
 import numpy as np
 
 
+# ROS 
+import rospy
+from std_msgs.msg import String
+
 # To do:
 # Try to get the debug on and off from the config file
 
@@ -17,6 +21,10 @@ class CrashAvoidance:
         self.collision_trajectory_threshold = collision_trajectory_threshold
         self.collision_time_to_impact = collision_time_to_impact
         self.entries = OrderedDict()
+        # ROS
+        rospy.init_node('publisher', anonymous=True)
+        self.pub = rospy.Publisher('depthai', String, queue_size=10)
+        rate = rospy.Rate(10) # 10hz
 
     def best_fit_slope_and_intercept(self, objectID):
         points = [item['value'] for item in self.entries[objectID]]
@@ -41,13 +49,20 @@ class CrashAvoidance:
 
         if DEBUG:
             image = np.ones((200, 200)) * 255
+
+            # print("b: {}".format(b))
             cv2.line(image, (0, int(-100 * m + b)), (200, int(100 * m + b)), (0, 0, 0))
             cv2.putText(image, f"Distance: {round(distance, 2)}", (20, 20), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0))
             if distance < self.collision_trajectory_threshold:
                 cv2.putText(image, "DANGER", (20, 100), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255))
                 cv2.putText(image, class_name, (100, 180), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255))
+
+                # Publish the trajectory object
+                self.pub.publish(class_name)
+
             cv2.imshow(f"trajectory", image)
             cv2.waitKey(1)
+            
         return distance < self.collision_trajectory_threshold
 
     def is_impact_close(self, objectID):
