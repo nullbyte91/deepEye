@@ -28,6 +28,11 @@ class CrashAvoidance:
         return m, b
 
     def is_dangerous_trajectory(self, objectID):
+        last = self.entries[objectID][0]
+
+        # Update the class name
+        class_name = last['class']
+        class_name = class_name[0]
         try:
             m, b = self.best_fit_slope_and_intercept(objectID)
         except ValueError:
@@ -40,6 +45,7 @@ class CrashAvoidance:
             cv2.putText(image, f"Distance: {round(distance, 2)}", (20, 20), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0))
             if distance < self.collision_trajectory_threshold:
                 cv2.putText(image, "DANGER", (20, 100), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255))
+                cv2.putText(image, class_name, (100, 180), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255))
             cv2.imshow(f"trajectory", image)
             cv2.waitKey(1)
         return distance < self.collision_trajectory_threshold
@@ -68,16 +74,22 @@ class CrashAvoidance:
             cv2.waitKey(1)
         return tti < self.collision_time_to_impact
 
-    def parse(self, tracker_objects):
+    def parse(self, tracker_objects, obj_class):
+        #print(type(tracker_objects))
         for key in list(self.entries.keys()):
+            #print(key)
             if key not in tracker_objects:
                 del self.entries[key]
 
         for key in tracker_objects.keys():
+            # print(tracker_objects[key])
+            # print(obj_class[key])
             item = {
                 'timestamp': time.time(),
-                'value': tracker_objects[key]
+                'value': tracker_objects[key],
+                'class': obj_class[key]
             }
+
             if key not in self.entries:
                 self.entries[key] = [item]
             else:

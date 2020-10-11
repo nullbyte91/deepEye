@@ -14,14 +14,16 @@ class Tracker:
         self.maxDisappeared = maxDisappeared
         self.maxDistance = maxDistance
         self.maxHistory = maxHistory
+        self.obj_class = OrderedDict()
         self.colors = OrderedDict()
         self.history = OrderedDict()
 
         self.log = log
 
-    def register(self, centroid):
+    def register(self, centroid, obj_cls):
         self.history[self.nextObjectID] = [centroid]
         self.objects[self.nextObjectID] = centroid
+        self.obj_class[self.nextObjectID] = obj_cls
         self.disappeared[self.nextObjectID] = 0
         self.colors[self.nextObjectID] = np.random.choice(range(256), size=3).astype('i').tolist()
         self.nextObjectID += 1
@@ -29,11 +31,15 @@ class Tracker:
     def deregister(self, objectID):
         del self.objects[objectID]
         del self.disappeared[objectID]
+        del self.obj_class[objectID]
         del self.colors[objectID]
         del self.history[objectID]
 
-    def update(self, pts, log):
-        # print(len(pts))
+    def update(self, pts_l, log):
+        pts = []
+        for item in pts_l:
+            pts.append(item[0:2])
+        
         if len(pts) == 0:
             for objectID in list(self.disappeared.keys()):
                 self.disappeared[objectID] += 1
@@ -41,12 +47,12 @@ class Tracker:
                 if self.disappeared[objectID] > self.maxDisappeared:
                     self.deregister(objectID)
 
-            return self.objects
+            return self.objects, self.obj_class
 
         if len(self.objects) == 0:
-            # self.log.info("self.objects 0")
-            for pt in pts:
-                self.register(pt)
+            for pt in pts_l:
+                self.register(pt[0:2], pt[2:3])
+
         else:
             # grab the set of object IDs and corresponding centroids
             objectIDs = list(self.objects.keys())
@@ -85,6 +91,6 @@ class Tracker:
                         self.deregister(objectID)
             else:
                 for col in unusedCols:
-                    self.register(pts[col])
+                    self.register(pts[col], "None")
 
-        return self.objects
+        return self.objects, self.obj_class

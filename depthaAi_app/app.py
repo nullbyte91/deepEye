@@ -70,7 +70,30 @@ class DepthAI:
         # Calculate colliusion_avoidance for bicycle
         # bus, car, dog,  horse, motorbike, train
         self.colliusion_avoidance = [2.0, 6.0, 7.0, 10.0, 12.0, 13.0, 14.0, 17.0]
-
+        # Label map
+        self.label = {
+            0.0: "background",
+            1.0: "aeroplane",
+            2.0: "bicycle",
+            3.0: "bird",
+            4.0: "boat",
+            5.0: "bottle",
+            6.0: "bus", 
+            7.0: "car",
+            8.0: "cat",
+            9.0: "chair",
+            10.0: "cow",
+            11.0: "diningtable",
+            12.0: "dog",
+            13.0: "horse",
+            14.0: "motorbike",
+            15.0: "person",
+            16.0: "pottedplant",
+            17.0: "sheep",
+            18.0: "sofa",
+            19.0: "train",
+            20.0: "tvmonitor",
+        }
     def capture(self):
 
         cv2.namedWindow("output", cv2.WINDOW_NORMAL)  
@@ -124,6 +147,7 @@ class DepthAI:
                             # Create dic for tracking
                             boxes.append({
                             'detector': "MobileNet SSD",
+                            'label': self.label[label],
                             'conf': e[0]['conf'],
                             'left': int(e[0]['x_min'] * img_w),
                             'top': int(e[0]['y_min'] * img_h),
@@ -179,9 +203,14 @@ def main():
     crash_avoidance = CrashAvoidance()
     
     for frame, results in di.capture():
-        pts = [(item['distance_x'], item['distance_z']) for item in results]
-        tracker_objs = tracker.update(pts, log)
-        crash_alert = crash_avoidance.parse(tracker_objs)
+        # Pass class along with Z and X coordinates
+        pts_l = [(item['distance_x'], item['distance_z'], item['label']) for item in results]
+
+        # Pass the points to tracker
+        tracker_objs, obj_class = tracker.update(pts_l, log)
+
+        # Pass the tracker objects to colliusion_avoidance
+        crash_alert = crash_avoidance.parse(tracker_objs, obj_class)
         
 if __name__ == "__main__":
     main()
