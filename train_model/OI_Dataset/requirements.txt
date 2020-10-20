@@ -1,0 +1,8 @@
+tensorflow-gpu==1.15
+pandas
+tqdm
+opencv-python
+lxml
+tf_slim
+scipy
+pycocotools
