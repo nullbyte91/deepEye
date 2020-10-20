@@ -2,9 +2,21 @@ import os
 import glob
 import pandas as pd
 import xml.etree.ElementTree as ET
+from argparse import ArgumentParser
 
-dataset = "/home/nullbyte/Desktop/OpenImages/OIDv4_ToolKit/OID/Dataset/"
-    
+dataset = " "
+
+def build_argparser():
+    """
+    Parse command line arguments.
+    :return: command line arguments
+    """
+    parser = ArgumentParser()
+    parser.add_argument("-i", "--input", required=True, type=str,
+                        help="Dataset path")
+    return parser
+
+
 def xml_to_csv(path):
     xml_list = []
     classes_names = []
@@ -44,6 +56,8 @@ def xml_to_csv(path):
     return xml_df, classes_names
 
 def main():
+    args = build_argparser().parse_args()
+    dataset = args.input
     os.chdir(dataset)
     for folder in ['train','test', 'validation']:
         image_path = os.path.join(os.getcwd(), (folder))

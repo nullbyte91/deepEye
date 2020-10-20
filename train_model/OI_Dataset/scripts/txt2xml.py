@@ -5,21 +5,31 @@ import argparse
 import cv2
 from textwrap import dedent
 from lxml import etree
+from argparse import ArgumentParser
 
 XML_DIR = 'To_PASCAL_XML'
 
-dataset = "/home/nullbyte/Desktop/OpenImages/OIDv4_ToolKit/OID/Dataset/"
+def build_argparser():
+    """
+    Parse command line arguments.
+    :return: command line arguments
+    """
+    parser = ArgumentParser()
+    parser.add_argument("-i", "--input", required=True, type=str,
+                        help="Dataset path")
+    return parser
 
-root = os.listdir(dataset)
+args = build_argparser().parse_args()
+root = os.listdir(args.input)
+
 for dir in root:
-    sub_dir = dataset + dir
+    sub_dir = args.input + dir
     if os.path.isdir(sub_dir):
         os.chdir(sub_dir)
         class_dirs = os.listdir(os.getcwd())
         for class_dir in class_dirs:
             if os.path.isdir(class_dir):
                 os.chdir(class_dir)
-                print(class_dir)
                 
                 if not os.path.exists(XML_DIR):
                     os.makedirs(XML_DIR)
@@ -30,7 +40,7 @@ for dir in root:
                         
                         annotation = etree.Element("annotation")
                         
-                        os.chdir("..")
+                        #os.chdir("..")
                         folder = etree.Element("folder")
                         folder.text = os.path.basename(os.getcwd())
                         annotation.append(folder)
@@ -52,13 +62,13 @@ for dir in root:
 
                         size = etree.Element("size")
                         annotation.append(size)
-
+                
                         width = etree.Element("width")
                         height = etree.Element("height")
                         depth = etree.Element("depth")
-
+                        
                         img = cv2.imread(filename_xml.text)
-
+      
                         width.text = str(img.shape[1])
                         height.text = str(img.shape[0])
                         depth.text = str(img.shape[2])
@@ -70,8 +80,7 @@ for dir in root:
                         segmented = etree.Element("segmented")
                         segmented.text = "0"
                         annotation.append(segmented)
-
-                        os.chdir("Label")
+    
                         label_original = open(filename, 'r')
 
                         # Labels from OIDv4 Toolkit: name_of_class X_min Y_min X_max Y_max
@@ -86,7 +95,6 @@ for dir in root:
                                 xmax_l = str(int(float(l[4])))
                                 ymax_l = str(int(float(l[5])))
                             else:
-                            
                                 class_name = l[0]
                                 xmin_l = str(int(float(l[1])))
                                 ymin_l = str(int(float(l[2])))
@@ -131,8 +139,6 @@ for dir in root:
                             ymax.text = ymax_l
                             bndbox.append(ymax)
 
-                        os.chdir("..")
-
                         os.chdir(XML_DIR)
 
                         # write xml to file
@@ -142,9 +148,6 @@ for dir in root:
                             f.close()
 
                         os.chdir("..")
-                        #os.chdir("Label")
-                        
-                os.chdir("..")
                 
                 os.chdir("..") 
         os.chdir("..")
