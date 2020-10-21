@@ -81,6 +81,52 @@ jetson performance analysis:
 ```bash
 pip3 install jetson-stats
 ```
+
+<b> Recompile a Jetson Linux kernel - Support RFCOMM TTY Support:</b></br>
+We are using RFCOMM Serial protocol for Jetson-Android communication and the defauly kernel doesn't have a support for RFCOMM TTY. So, We have to recompile with new kernel config and update.
+
+```bash
+# Basic Update
+sudo apt-get update
+sudo apt-get install -y libncurses5-dev
+
+# Downlaod Linux L4T(BSP) Source code from Nvidia Downlaod center
+wget https://developer.nvidia.com/embedded/L4T/r32_Release_v4.3/Sources/T210/public_sources.tbz2
+
+tar -xvf public_sources.tbz2
+
+cp Linux_for_Tegra/source/public/kernel_src.tbz2 ~/
+
+pushd ~/
+
+tar -xvf kernel_src.tbz2
+
+pushd ~/kernel/kernel-4.9
+
+zcat /proc/config.gz > .config
+
+# Enable RFCOMM TTY
+make menuconfig # Networking Support --> Bluetooth subsystem support ---> Select RFCOMM TTY Support ---> Save ---> Exit
+
+make prepare
+
+make modules_prepare
+
+# Compile kernel as an image file
+make -j5 Image
+
+# Compile all kernel modules
+make -j5 modules
+
+# Install modules and kernel image
+cd ~/kernel/kernel-4.9
+sudo make modules_install
+sudo cp arch/arm64/boot/Image /boot/Image
+
+# Reboot 
+sudo reboot
+```
+
 ### Depth AI Python Interface Install 🚀
 ```bash
 git clone https://github.com/luxonis/depthai-python.git
