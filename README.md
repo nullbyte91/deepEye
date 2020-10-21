@@ -180,7 +180,7 @@ python3 -m pip install -r requirements.txt
 ### Custom Object Detector
 We have retrained an SSD MobileNet SSD-V2 with Open Image dataset. We picked up and trained all the object classes that help visually impaired people to navigate when they go to outdoor environments.
 
-We have added [README](https://github.com/nullbyte91/vision-system/tree/master/train_model/OI_Dataset) for the end to end training and the OpenVino Conversion before loading to depth AI.
+We have added [README](https://github.com/nullbyte91/vision-system/tree/master/custom_model/OI_Dataset) for the end to end training and the OpenVino Conversion before loading to depth AI.
 
 ### 🛠 Hardware Details
 We plan use the DepthAI USB3 Modular Cameras[BW1098FFC] for POC. We are using RPI and Jeston. The AI/vision processing is done on the depthAI based on Myriad X Arch.
