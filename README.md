@@ -14,10 +14,12 @@ So, we propose to build <b>an advanced assist system for the Visually Impaired P
   - [💻 Hardware pre-requisite](#-hardware-pre-requisite)
   - [📦 Software pre-requisite](#1-software-pre-requisite-)
     - [For Jetson: Flash Jetson board to jetpack 4.4 ⚡️](#for-jetson-flash-jetson-board-to-jetpack-44-️)
-    - [Depth AI Install 🚀](#depth-ai-install)
+    - [Depth AI Install](#depth-ai-install)
     - [Camera Calibration ](#camera-calibration)
     - [Robotic Operating System](#robotic-operating-system)
-    - [Other Dependency](#other-dependency)  
+    - [Other Dependency](#other-dependency)
+  - [🎛 Advanced uses](#-advanced-uses)
+    - [Custom Object Detector](#custom-object-detector)
   - [🛠 Hardware Details](#hardware-details)
   - [💌 Acknowledgments](#-acknowledgments)
   
@@ -82,7 +84,8 @@ jetson performance analysis:
 pip3 install jetson-stats
 ```
 
-<b> Recompile a Jetson Linux kernel - Support RFCOMM TTY Support:</b></br>
+<b> Recompile a Jetson Linux kernel - Support RFCOMM TTY Support:</b>
+
 We are using RFCOMM Serial protocol for Jetson-Android communication and the defauly kernel doesn't have a support for RFCOMM TTY. So, We have to recompile with new kernel config and update.
 
 ```bash
@@ -127,7 +130,7 @@ sudo cp arch/arm64/boot/Image /boot/Image
 sudo reboot
 ```
 
-### Depth AI Python Interface Install 🚀
+### Depth AI Python Interface Install
 ```bash
 git clone https://github.com/luxonis/depthai-python.git
 cd depthai-python
@@ -172,6 +175,13 @@ rosdep update
 python3 -m pip install -r requirements.txt
 ```
 
+## 🎛 Advanced uses
+
+### Custom Object Detector
+We have retrained an SSD MobileNet SSD-V2 with Open Image dataset. We picked up and trained all the object classes that help visually impaired people to navigate when they go to outdoor environments.
+
+We have added [README](https://github.com/nullbyte91/vision-system/tree/master/train_model/OI_Dataset) for the end to end training and the OpenVino Conversion before loading to depth AI.
+
 ### 🛠 Hardware Details
 We plan use the DepthAI USB3 Modular Cameras[BW1098FFC] for POC. We are using RPI and Jeston. The AI/vision processing is done on the depthAI based on Myriad X Arch.
 
@@ -190,11 +200,13 @@ We plan use the DepthAI USB3 Modular Cameras[BW1098FFC] for POC. We are using RP
 * 5V Fan/Aux header
 * Pads for DepthAI SoM aux signals
 * Design files produced with Altium Designer 20
+
 ## 💌 Acknowledgments
 [DepthaAI Home Page](https://luxonis.com/depthai)<br>
 [depthaAI core development](https://github.com/luxonis)<br>
 [OpenVino toolkit development](https://github.com/openvinotoolkit/openvino)<br>
 [BW1098FFC_DepthAI_USB3 HW](https://github.com/luxonis/depthai-hardware/tree/master/BW1098FFC_DepthAI_USB3)<br>
+[OIDv4 ToolKit](https://github.com/EscVM/OIDv4_ToolKit)<br>
 
 
 
