@@ -173,8 +173,15 @@ sudo apt update
 
 sudo apt install -y ros-melodic-ros-base
 
+# Env setup
+echo "source /opt/ros/melodic/setup.bash" >> ~/.bashrc
+source ~/.bashrc
+
+# Dep to build ROS Package
+sudo apt install python-rosdep python-rosinstall python-rosinstall-generator python-wstool build-essential
+
 # Install inside virtual env
-python3 -m pip install -U rosdep
+sudo apt install python-rosdep
 rosdep init
 
 rosdep update
@@ -182,6 +189,10 @@ rosdep update
 ### Other Dependency
 ```bash
 python3 -m pip install -r requirements.txt
+
+# SOX for txt 2 speech
+sudo apt-get install sox libsox-fmt-mp3
+
 ```
 
 ## 🎛 Advanced uses
