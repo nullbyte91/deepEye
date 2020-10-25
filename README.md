@@ -132,6 +132,15 @@ sudo reboot
 
 ### Depth AI Python Interface Install
 ```bash
+
+# Install dep
+curl -fL http://docs.luxonis.com/install_dependencies.sh | bash
+sudo apt install libusb-1.0-0-dev
+
+# USB Udev 
+echo 'SUBSYSTEM=="usb", ATTRS{idVendor}=="03e7", MODE="0666"' | sudo tee /etc/udev/rules.d/80-movidius.rules
+sudo udevadm control --reload-rules && sudo udevadm trigger
+
 git clone https://github.com/luxonis/depthai-python.git
 cd depthai-python
 git submodule update --init --recursive

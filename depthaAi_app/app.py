@@ -8,7 +8,7 @@ from config import model
 
 # Object Tracker
 from tracker import Tracker
-from colliusion_avoidance import CrashAvoidance
+from collision_avoidance import CrashAvoidance
 
 log = logging.getLogger(__name__)
 
@@ -67,9 +67,9 @@ class DepthAI:
 
         self.detection = []
         
-        # Calculate colliusion_avoidance for bicycle
+        # Calculate collision_avoidance for bicycle
         # bus, car, dog,  horse, motorbike, train
-        self.colliusion_avoidance = [2.0, 6.0, 7.0, 10.0, 12.0, 13.0, 14.0, 17.0]
+        self.collision_avoidance = [2.0, 6.0, 7.0, 10.0, 12.0, 13.0, 14.0, 17.0]
         # Label map
         self.label = {
             0.0: "background",
@@ -94,9 +94,41 @@ class DepthAI:
             19.0: "train",
             20.0: "tvmonitor",
         }
+
+    def image_resize(self, image, width = None, height = None, inter = cv2.INTER_AREA):
+        # initialize the dimensions of the image to be resized and
+        # grab the image size
+        dim = None
+        (h, w) = image.shape[:2]
+
+        # if both the width and height are None, then return the
+        # original image
+        if width is None and height is None:
+            return image
+
+        # check to see if the width is None
+        if width is None:
+            # calculate the ratio of the height and construct the
+            # dimensions
+            r = height / float(h)
+            dim = (int(w * r), height)
+
+        # otherwise, the height is None
+        else:
+            # calculate the ratio of the width and construct the
+            # dimensions
+            r = width / float(w)
+            dim = (width, int(h * r))
+
+        # resize the image
+        resized = cv2.resize(image, dim, interpolation = inter)
+
+        # return the resized image
+        return resized
+
     def capture(self):
 
-        cv2.namedWindow("output", cv2.WINDOW_NORMAL)  
+        #cv2.namedWindow("output", cv2.WINDOW_NORMAL)  
 
         # Label mapping
         try:
@@ -143,7 +175,7 @@ class DepthAI:
                     for e in self.detection:
                         color = (0, 255, 0) # bgr
                         label = e[0]['label']
-                        if label in self.colliusion_avoidance:
+                        if label in self.collision_avoidance:
                             # Create dic for tracking
                             boxes.append({
                             'detector': "MobileNet SSD",
@@ -187,7 +219,10 @@ class DepthAI:
                                 pt_t5 = x1, y1 + 100
                                 cv2.putText(frame, 'z1:' '{:7.3f}'.format(e[0]['distance_z']) + ' m', pt_t5, cv2.FONT_HERSHEY_SIMPLEX, 0.5, color)
                         
+                        # frame = self.image_resize(frame, 500)
+
                         cv2.imshow("output", frame)
+
                         if cv2.waitKey(1) == ord('q'):
                             cv2.destroyAllWindows()
                             exit(0)
@@ -209,7 +244,7 @@ def main():
         # Pass the points to tracker
         tracker_objs, obj_class = tracker.update(pts_l, log)
 
-        # Pass the tracker objects to colliusion_avoidance
+        # Pass the tracker objects to collision_avoidance
         crash_alert = crash_avoidance.parse(tracker_objs, obj_class)
         
 if __name__ == "__main__":
