@@ -25,7 +25,7 @@ So, we propose to build <b>an advanced assist system for the Visually Impaired P
   
 ## 🎬 Software High Level Design
 
-![HLD](images/HLD.png "Software Stack")
+![HLD](images/HLD_1.JPG "Software Stack")
 
 ## 💻 Hardware pre-requisite
 * [Jetson Nano](https://developer.nvidia.com/embedded/jetson-nano-developer-kit)
@@ -35,8 +35,6 @@ So, we propose to build <b>an advanced assist system for the Visually Impaired P
 ##  📦 Software pre-requisite
 
 ### For Jetson: Flash Jetson board to jetpack 4.4 ⚡️
-
-![Jetson Nano](images/jetson-nano-dev-kit-top-r6-HR-B01.png "Jetson Nano")
 
 <b>microSD card Prepration:</b>
 1. Download Jetson Nano Developer Kit SD Card image [Jetpack4.4 Image](https://developer.nvidia.com/jetson-nano-sd-card-image).
