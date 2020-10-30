@@ -17,6 +17,7 @@ So, we propose to build <b>an advanced assist system for the Visually Impaired P
     - [Depth AI Install](#depth-ai-install)
     - [Camera Calibration ](#camera-calibration)
     - [Robotic Operating System](#robotic-operating-system)
+    - [Android RFCOMM Setup](#android-rfcomm-setup)
     - [Other Dependency](#other-dependency)
   - [🎛 Advanced uses](#-advanced-uses)
     - [Custom Object Detector](#custom-object-detector)
@@ -184,6 +185,18 @@ rosdep init
 
 rosdep update
 ```
+
+### Android RFCOMM Setup
+We need to configure rfcomm service in order to use the Android application for text to speech feature.
+
+```bash
+sudo cp android/startup_linux/deepeye.sh /usr/bin/
+sudo chmod a+x /usr/bin/deepeye.sh
+
+sudo cp android/startup_linux/rfcomm.service /etc/systemd/system/
+sudo systemctl enable rfcomm
+```
+
 ### Other Dependency
 ```bash
 python3 -m pip install -r requirements.txt
