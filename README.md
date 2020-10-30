@@ -10,8 +10,8 @@ So, we propose to build <b>an advanced assist system for the Visually Impaired P
 
 - [deepEye - The third eye for Visually Impaired People](#deepEye-the-third-eye-for-visually-impaired-people)
   - [Table of content](#table-of-content)
-  - [🗃Project structure](#project-structure)
   - [🎬 Software High Level Design](#software-high-level-design)
+  - [🗃Project structure](#project-structure)
   - [💻 Hardware pre-requisite](#-hardware-pre-requisite)
   - [📦 Software pre-requisite](#1-software-pre-requisite-)
     - [For Jetson: Flash Jetson board to jetpack 4.4 ⚡️](#for-jetson-flash-jetson-board-to-jetpack-44-️)
@@ -25,9 +25,14 @@ So, we propose to build <b>an advanced assist system for the Visually Impaired P
   - [🛠 Hardware Details](#hardware-details)
   - [💌 Acknowledgments](#-acknowledgments)
 
+## 🎬 Software High Level Design
+
+![HLD](images/HLD_1.JPG "Software Stack")
+
+
 ## 🗃 Project structure
 
-```
+```python
 .
 ├── android                      
 │   ├── apk                                 # Android APK File       
@@ -77,11 +82,6 @@ So, we propose to build <b>an advanced assist system for the Visually Impaired P
     ├── model_intel.sh
     └── rpi_openvino_install-2020_1.sh
 ```
-
-
-## 🎬 Software High Level Design
-
-![HLD](images/HLD_1.JPG "Software Stack")
 
 ## 💻 Hardware pre-requisite
 * [Jetson Nano](https://developer.nvidia.com/embedded/jetson-nano-developer-kit)
