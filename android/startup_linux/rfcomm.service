@@ -1,0 +1,10 @@
+[Unit]
+Description=rfcomm service
+
+[Service]
+Type=forking
+ExecStart=/bin/bash /usr/bin/deepeye.sh start
+KillMode=process
+
+[Install]
+WantedBy=multi-user.target
