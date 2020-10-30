@@ -21,3 +21,5 @@ root.info("Logging system initialized, kept in file {}...".format(logfile))
 
 # Model path
 model = str(Path('models/').resolve())
+# calibration path
+calib = str(Path('calibration/').resolve())
