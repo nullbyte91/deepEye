@@ -205,6 +205,11 @@ python3 setup.py develop
 
 # Check the Installation
 python3 -c "import depthai"
+
+# Install opencv
+cd scripts
+bash opencv.sh
+cd ..
 ```
 
 ### Camera Calibration
