@@ -10,6 +10,7 @@ So, we propose to build <b>an advanced assist system for the Visually Impaired P
 
 - [deepEye - The third eye for Visually Impaired People](#deepEye-the-third-eye-for-visually-impaired-people)
   - [Table of content](#table-of-content)
+  - [🗃Project structure](#project-structure)
   - [🎬 Software High Level Design](#software-high-level-design)
   - [💻 Hardware pre-requisite](#-hardware-pre-requisite)
   - [📦 Software pre-requisite](#1-software-pre-requisite-)
@@ -23,7 +24,61 @@ So, we propose to build <b>an advanced assist system for the Visually Impaired P
     - [Custom Object Detector](#custom-object-detector)
   - [🛠 Hardware Details](#hardware-details)
   - [💌 Acknowledgments](#-acknowledgments)
-  
+
+## 🗃 Project structure
+
+```
+.
+├── android                      
+│   ├── apk                                 # Android APK File       
+│   │   └── app-debug.apk
+│   └── startup_linux
+│       ├── deepeye.sh                      # deepeye startup script to enable RFCOMM
+│       └── rfcomm.service                  # systemd service for RFCOMM
+|
+├── custom_model
+│   └── OI_Dataset                          # Mobile Net SSD V2 Custom training on OpenImage Dataset V4
+│       ├── README.md
+│       ├── requirements.txt
+│       ├── scripts
+│       │   ├── csv2tfrecord.py             # Tensorflow: CSV to TFrecord Converter
+│       │   ├── txt2xml.py                  # Tensorflow: TXT to XML Converter
+│       │   └── xml2csv.py                  # Tensorflow: XML to CSV Converter
+│       └── tf_test.py                      # Test script for Trained model inference
+|
+├── deepeye_app                             # Deepeye core application
+│   ├── app.py                              # Object detection and post processing
+│   ├── calibration                         # Camera Callibration
+│   │   └── config
+│   │       └── BW1098FFC.json
+│   ├── collision_avoidance.py              # Collision calculation
+│   ├── config.py
+│   ├── models                              # Mobilenet-ssd v2 trained model
+│   │   ├── mobilenet-ssd.blob
+│   │   └── mobilenet-ssd_depth.json
+│   ├── tracker.py                          # Object tracker
+│   └── txt2speech                          # txt2speech model
+│       ├── README.md
+│       ├── txt2speech.py
+│       └── txt-simulator.py
+├── images
+├── openvino_analysis                       # CNN model fom Intel and Opensouce ACC, FPS analysis
+│   ├── intel
+│   │   ├── object-detection
+│   │   └── semantic-segmentation
+│   ├── public
+│   │   ├── ssd_mobilenet_v2_coco
+│   │   └── yolo-v3
+│   └── README.md
+├── README.md                              # Deepeye README
+├── requirements.txt                  
+└── scripts                                # OpenVino Toolkit scripts
+    ├── inference_engine_native_myriad.sh  
+    ├── model_intel.sh
+    └── rpi_openvino_install-2020_1.sh
+```
+
+
 ## 🎬 Software High Level Design
 
 ![HLD](images/HLD_1.JPG "Software Stack")
