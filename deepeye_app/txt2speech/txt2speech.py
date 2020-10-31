@@ -54,7 +54,8 @@ def isInternetConnected():
 
 def callback(data):
     global networkConnection
-    print(data)
+    print("Debug Data: ".format(data))
+
     if bt_flag == False:
         if networkConnection == True:
             # Google speech block
@@ -75,7 +76,6 @@ def callback(data):
         print("stdout: ".format(stdout))
 
 def main():
-
     format = "%(asctime)s: %(message)s"
     logging.basicConfig(format=format, level=logging.INFO,
                         datefmt="%H:%M:%S")

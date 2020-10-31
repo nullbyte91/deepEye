@@ -59,9 +59,9 @@ class CrashAvoidance:
             if distance < self.collision_trajectory_threshold:
                 # We need to cal and update the oppsite side object 
                 if (m < 0):
-                    string = "left side" + " "+ class_name + " "
+                    string = "A " + class_name + " is on your" + "left side "
                 else:  
-                   string = "right side" + " " + class_name + " "
+                   string = "A " + class_name + " is on your" + " right side "
 
                 cv2.putText(image, "DANGER", (20, 100), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255))
                 cv2.putText(image, class_name, (100, 180), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255))
