@@ -6,9 +6,16 @@ We decided to submit a project proposal for this competition back in July. Our g
 
 So, we propose to build <b>an advanced assist system for the Visually Impaired People to perceive the environment in a better way and would provide seamless, reliable navigation for them at a low cost so that anyone can leverage the benefits of computer vision.</b>
 
+## Demo Videos
+
+| 👉 [deepEye Demo](https://www.youtube.com/watch?v=llE8l1IWpYA&feature=youtu.be) |
+| ------------------------------------------------------------ |
+| [![deepEye Demo](https://github.com/nullbyte91/deepEye/blob/master/images/demo.PNG)](https://www.youtube.com/watch?v=llE8l1IWpYA&feature=youtu.be) |
+
 ## Table of content
 
 - [deepEye - The third eye for Visually Impaired People](#deepEye-the-third-eye-for-visually-impaired-people)
+  - [Demo Videos](#demo-videos)
   - [Table of content](#table-of-content)
   - [🎬 Software High Level Design](#software-high-level-design)
   - [🗃Project structure](#project-structure)
