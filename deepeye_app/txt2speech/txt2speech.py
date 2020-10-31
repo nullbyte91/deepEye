@@ -24,6 +24,9 @@ s = sched.scheduler(time.time, time.sleep)
 # Mutex 
 mutex = Lock()
 
+# BT Connected flag
+bt_flag = True
+
 def isInternetConnected():
     global networkConnection
 
@@ -52,18 +55,27 @@ def isInternetConnected():
 def callback(data):
     global networkConnection
     print(data)
-    if networkConnection == True:
-        # Google speech block
-        speech = Speech(data.data, lang)
-        speech.play()
-        time.sleep(0.5)
+    if bt_flag == False:
+        if networkConnection == True:
+            # Google speech block
+            speech = Speech(data.data, lang)
+            speech.play()
+            time.sleep(0.5)
+        else:
+            # On device mycroft mimic v1
+            p = subprocess.Popen(["/home/nullbyte/Desktop/myGit/mimic1/mimic", data.data], stdout = subprocess.PIPE)
+            (output, err) = p.communicate() 
+            p_status = p.wait()
     else:
-        # On device mycroft mimic v1
-        p = subprocess.Popen(["/home/nullbyte/Desktop/myGit/mimic1/mimic", data.data], stdout = subprocess.PIPE)
-        (output, err) = p.communicate() 
-        p_status = p.wait()
+        cmd = "echo " + data.data + " > /dev/rfcomm0"
+        print(cmd)
+        p = subprocess.Popen(cmd, shell=True)
+        (stderr,stdout) = p.communicate()
+        print("stderr: ".format(stderr))
+        print("stdout: ".format(stdout))
 
 def main():
+
     format = "%(asctime)s: %(message)s"
     logging.basicConfig(format=format, level=logging.INFO,
                         datefmt="%H:%M:%S")
