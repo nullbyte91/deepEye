@@ -20,6 +20,7 @@ So, we propose to build <b>an advanced assist system for the Visually Impaired P
     - [Robotic Operating System](#robotic-operating-system)
     - [Android RFCOMM Setup](#android-rfcomm-setup)
     - [Other Dependency](#other-dependency)
+  - [🖖 Quick Start](#quick-start)
   - [🎛 Advanced uses](#-advanced-uses)
     - [Custom Object Detector](#custom-object-detector)
   - [🛠 Hardware Details](#hardware-details)
@@ -266,6 +267,25 @@ sudo apt-get install sox libsox-fmt-mp3
 
 ```
 
+## 🖖 Quick Start
+```bash
+# Terminal one
+# ROS Master
+roscore &
+
+# Terminal Two
+# Deepeye core app
+pushd deepeye_app
+python3 app.py
+popd
+
+# Terminal three
+# Txt2speech middleware component
+pushd deepeye_app
+python3 txt2speech/txt2speech.py
+popd
+```
+
 ## 🎛 Advanced uses
 
 ### Custom Object Detector
@@ -279,7 +299,7 @@ We plan use the DepthAI USB3 Modular Cameras[BW1098FFC] for POC. We are using RP
 ![depthAI](images/BW1098FFC_R0M0E0_diag.png "depthAI HW")
 
 
-*Key Features of the device:
+<b>Key Features of the device:</b>
 
 * 2 BG0250TG mono camera module interfaces
 * 1 BG0249 RGB camera module interface
