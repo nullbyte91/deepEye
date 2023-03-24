@@ -1,4 +1,4 @@
-tensorflow-gpu==1.15.4
+tensorflow-gpu==2.12.0
 pandas
 tqdm
 opencv-python
